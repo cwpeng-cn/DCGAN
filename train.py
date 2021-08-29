@@ -109,7 +109,7 @@ for epoch in range(num_epochs):
         D_losses.append(errD.item())
 
         # Check how the generator is doing by saving G's output on fixed_noise
-        if (iters % 5 == 0) or ((epoch == num_epochs - 1) and (i == len(data_loader) - 1)):
+        if (iters % 1 == 0) or ((epoch == num_epochs - 1) and (i == len(data_loader) - 1)):
             with torch.no_grad():
                 fake = netG(fixed_noise).detach().cpu()
             img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
@@ -119,6 +119,6 @@ for epoch in range(num_epochs):
 fig = plt.figure(figsize=(8, 8))
 plt.axis("off")
 for i, img in enumerate(img_list):
-    img = np.transpose(img, (1, 2, 0))
+    img = np.transpose(img.numpy(), (1, 2, 0))
     im = Image.fromarray(img)
     im.save("{}.jpeg".format(i))
