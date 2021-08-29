@@ -5,10 +5,9 @@ from torch.utils import data
 from data import ForestDataset
 from model import Generator, Discriminator
 import torchvision.utils as vutils
-from IPython.display import HTML
 import pylab as plt
 import numpy as np
-import matplotlib.animation as animation
+from PIL import Image
 
 DATA_DIR = "../datasets/Intel_image_classification/seg_train/seg_train/forest"
 IMAGE_SIZE = 64
@@ -119,7 +118,7 @@ for epoch in range(num_epochs):
 
 fig = plt.figure(figsize=(8, 8))
 plt.axis("off")
-ims = [[plt.imshow(np.transpose(i, (1, 2, 0)), animated=True)] for i in img_list]
-ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
-
-HTML(ani.to_jshtml())
+for i, img in enumerate(img_list):
+    np.transpose(img, (1, 2, 0))
+    im = Image.fromarray(img)
+    im.save("{}.jpeg".format(i))
