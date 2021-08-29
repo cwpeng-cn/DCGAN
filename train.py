@@ -15,7 +15,7 @@ BATCH_SIZE = 128
 WORKER = 1
 LR = 0.0002
 NZ = 100
-num_epochs = 5
+num_epochs = 100
 
 dataset = ForestDataset(dataset_path=DATA_DIR, image_size=IMAGE_SIZE)
 data_loader = data.DataLoader(dataset, batch_size=BATCH_SIZE,
@@ -109,7 +109,7 @@ for epoch in range(num_epochs):
         D_losses.append(errD.item())
 
         # Check how the generator is doing by saving G's output on fixed_noise
-        if (iters % 1 == 0) or ((epoch == num_epochs - 1) and (i == len(data_loader) - 1)):
+        if (iters % 5 == 0) or ((epoch == num_epochs - 1) and (i == len(data_loader) - 1)):
             with torch.no_grad():
                 fake = netG(fixed_noise).detach().cpu()
             img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
