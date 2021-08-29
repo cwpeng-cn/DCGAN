@@ -119,6 +119,6 @@ for epoch in range(num_epochs):
 fig = plt.figure(figsize=(8, 8))
 plt.axis("off")
 for i, img in enumerate(img_list):
-    np.transpose(img, (1, 2, 0))
+    img = np.transpose(img, (1, 2, 0))
     im = Image.fromarray(img)
     im.save("{}.jpeg".format(i))
