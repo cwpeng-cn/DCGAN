@@ -99,7 +99,7 @@ for epoch in range(num_epochs):
         optimizerG.step()
 
         # Output training stats
-        if i % 50 == 0:
+        if i % 1 == 0:
             print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                   % (epoch, num_epochs, i, len(data_loader),
                      errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
@@ -119,6 +119,7 @@ for epoch in range(num_epochs):
 fig = plt.figure(figsize=(8, 8))
 plt.axis("off")
 for i, img in enumerate(img_list):
+    print(img.numpy().shape)
     img = np.transpose(img.numpy(), (1, 2, 0))
     im = Image.fromarray(img)
     im.save("{}.jpeg".format(i))
