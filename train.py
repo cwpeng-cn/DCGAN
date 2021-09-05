@@ -15,7 +15,7 @@ BATCH_SIZE = 128
 WORKER = 1
 LR = 0.0002
 NZ = 100
-num_epochs = 1
+num_epochs = 600
 
 dataset = ForestDataset(dataset_path=DATA_DIR, image_size=IMAGE_SIZE)
 data_loader = data.DataLoader(dataset, batch_size=BATCH_SIZE,
