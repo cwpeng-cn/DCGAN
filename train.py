@@ -118,9 +118,11 @@ reminder("Finish train:{}".format(iters))
 torch.save(netG.state_dict(), MODEL_G_PATH, _use_new_zipfile_serialization=False)
 torch.save(netD.state_dict(), MODEL_D_PATH, _use_new_zipfile_serialization=False)
 with open(MODEL_G_PATH, 'rb') as f, open(
-        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice{}'.format(MODEL_G_PATH), "wb") as fw:
+        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice/{}'.format(MODEL_G_PATH.split('/')[-1]),
+        "wb") as fw:
     fw.write(f.read())
 with open(MODEL_D_PATH, 'rb') as f, open(
-        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice{}'.format(MODEL_D_PATH), "wb") as fw:
+        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice/{}'.format(MODEL_D_PATH.split('/')[-1]),
+        "wb") as fw:
     fw.write(f.read())
 reminder("Finish save:{}".format(iters))
