@@ -2,20 +2,18 @@ import torch
 from torch import optim
 from torch import nn
 from torch.utils import data
-from data import ForestDataset
+from data import ForestDataset, LossWriter, reminder
 from model import Generator, Discriminator
-import torchvision.utils as vutils
-import pylab as plt
-import numpy as np
-from PIL import Image
 
 DATA_DIR = "../datasets/Intel_image_classification/seg_train/seg_train/forest"
+LOG_G_PATH = "./Log_G.txt"
+LOG_D_PATH = "./Log_D.txt"
 IMAGE_SIZE = 64
 BATCH_SIZE = 128
 WORKER = 1
 LR = 0.0002
 NZ = 100
-num_epochs = 1000
+num_epochs = 1
 
 dataset = ForestDataset(dataset_path=DATA_DIR, image_size=IMAGE_SIZE)
 data_loader = data.DataLoader(dataset, batch_size=BATCH_SIZE,
@@ -34,6 +32,8 @@ fake_label = 0.
 # Setup Adam optimizers for both G and D
 optimizerD = optim.Adam(netD.parameters(), lr=LR, betas=(0.5, 0.999))
 optimizerG = optim.Adam(netG.parameters(), lr=LR, betas=(0.5, 0.999))
+g_writer = LossWriter(save_path=LOG_G_PATH)
+d_writer = LossWriter(save_path=LOG_D_PATH)
 
 # Lists to keep track of progress
 img_list = []
@@ -47,7 +47,7 @@ print("Starting Training Loop...")
 # For each epoch
 for epoch in range(num_epochs):
     # For each batch in the dataloader
-    for i, data in enumerate(data_loader):
+    for data in data_loader:
 
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
@@ -99,26 +99,17 @@ for epoch in range(num_epochs):
         optimizerG.step()
 
         # Output training stats
-        if i % 1 == 0:
+        if iters % 5 == 0:
             print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                  % (epoch, num_epochs, i, len(data_loader),
+                  % (epoch, num_epochs, iters, len(data_loader),
                      errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+            d_writer.add(loss=errD.item(), i=iters)
+            g_writer.add(loss=errG.item(), i=iters)
 
         # Save Losses for plotting later
         G_losses.append(errG.item())
         D_losses.append(errD.item())
 
-        # Check how the generator is doing by saving G's output on fixed_noise
-        if (iters % 5 == 0) or ((epoch == num_epochs - 1) and (i == len(data_loader) - 1)):
-            with torch.no_grad():
-                fake = netG(fixed_noise).detach().cpu()
-            img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
-
         iters += 1
 
-fig = plt.figure(figsize=(8, 8))
-plt.axis("off")
-for i, img in enumerate(img_list):
-    img = np.transpose(img.numpy(), (1, 2, 0)) * 255
-    im = Image.fromarray(np.uint8(img))
-    im.save("{}.jpeg".format(i))
+reminder("Finish train:{}".format(iters))
