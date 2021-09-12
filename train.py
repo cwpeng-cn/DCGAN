@@ -2,10 +2,10 @@ import torch
 from torch import optim
 from torch import nn
 from torch.utils import data
-from data import ForestDataset, LossWriter, reminder
+from data import AnimeDataset, LossWriter, reminder
 from model import Generator, Discriminator
 
-DATA_DIR = "../datasets/Intel_image_classification/seg_train/seg_train/forest"
+DATA_DIR = "../datasets/selfie2anime/all"
 MODEL_G_PATH = "./Net_G.pth"
 MODEL_D_PATH = "./Net_D.pth"
 LOG_G_PATH = "./Log_G.txt"
@@ -15,9 +15,9 @@ BATCH_SIZE = 128
 WORKER = 1
 LR = 0.0002
 NZ = 100
-num_epochs = 600
+num_epochs = 300
 
-dataset = ForestDataset(dataset_path=DATA_DIR, image_size=IMAGE_SIZE)
+dataset = AnimeDataset(dataset_path=DATA_DIR, image_size=IMAGE_SIZE)
 data_loader = data.DataLoader(dataset, batch_size=BATCH_SIZE,
                               shuffle=True, num_workers=WORKER)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -123,6 +123,14 @@ with open(MODEL_G_PATH, 'rb') as f, open(
     fw.write(f.read())
 with open(MODEL_D_PATH, 'rb') as f, open(
         '/content/drive/MyDrive/Colab/pytorch-neural-network-practice/{}'.format(MODEL_D_PATH.split('/')[-1]),
+        "wb") as fw:
+    fw.write(f.read())
+with open(LOG_G_PATH, 'rb') as f, open(
+        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice/{}'.format(LOG_G_PATH.split('/')[-1]),
+        "wb") as fw:
+    fw.write(f.read())
+with open(LOG_D_PATH, 'rb') as f, open(
+        '/content/drive/MyDrive/Colab/pytorch-neural-network-practice/{}'.format(LOG_D_PATH.split('/')[-1]),
         "wb") as fw:
     fw.write(f.read())
 reminder("Finish save:{}".format(iters))

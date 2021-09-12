@@ -7,7 +7,7 @@ from knockknock import wechat_sender
 URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=7a49f83e-011c-47c7-ab0a-593c739917e7"
 
 
-class ForestDataset(Dataset):
+class AnimeDataset(Dataset):
 
     def __init__(self, dataset_path, image_size):
         self.transform = transforms.Compose([
