@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 
 
@@ -38,6 +39,10 @@ class Generator(nn.Module):
         self.apply(weights_init)
 
     def forward(self, input):
+        # 安卓要求输入为：1，3，100，1
+        # b, _, dim_z, _ = input.shape
+        input = torch.transpose(input[:, 0:1, :, :], 1, 2)
+        print(input.shape)
         return self.main(input)
 
 
@@ -68,4 +73,3 @@ class Discriminator(nn.Module):
 
     def forward(self, input):
         return self.main(input)
-

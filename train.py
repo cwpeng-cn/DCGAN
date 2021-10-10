@@ -27,7 +27,7 @@ netD = Discriminator().to(device)
 criterion = nn.BCELoss()
 # Create batch of latent vectors that we will use to visualize
 #  the progression of the generator
-fixed_noise = torch.randn(64, NZ, 1, 1, device=device)
+fixed_noise = torch.randn(64, 1, NZ, 1, device=device)
 # Establish convention for real and fake labels during training
 real_label = 1.
 fake_label = 0.
@@ -69,7 +69,7 @@ for epoch in range(num_epochs):
 
         ## Train with all-fake batch
         # Generate batch of latent vectors
-        noise = torch.randn(b_size, NZ, 1, 1, device=device)
+        noise = torch.randn(b_size, 1, NZ, 1, device=device)
         # Generate fake image batch with G
         fake = netG(noise)
         label.fill_(fake_label)
