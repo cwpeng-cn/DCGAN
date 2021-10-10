@@ -42,7 +42,6 @@ class Generator(nn.Module):
         # 安卓要求输入为：1，3，100，1
         # b, _, dim_z, _ = input.shape
         input = torch.transpose(input[:, 0:1, :, :], 1, 2)
-        print(input.shape)
         return self.main(input)
 
 
