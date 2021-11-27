@@ -39,7 +39,7 @@ iters = 0
 
 print(dataset.__len__())
 
-print("Starting Training Loop...")
+print("开始训练")
 for epoch in range(num_epochs):
     for data in data_loader:
         #################################################
