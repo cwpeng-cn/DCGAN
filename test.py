@@ -21,7 +21,3 @@ for i in range(25):
 plt.imshow(full_image)
 plt.show()
 plt.imsave("hah.png", full_image)
-
-x = torch.randn(1, 100)
-traced_script_module = torch.jit.trace(func=net, example_inputs=x)
-traced_script_module.save("DCGAN_Generator.pt")
