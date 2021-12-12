@@ -37,10 +37,10 @@ class Generator(nn.Module):
         )
         self.apply(weights_init)
 
-    def forward(self, input):
-        b, dim_z = input.shape
-        input = input.view(b, dim_z, 1, 1)
-        return self.main(input)
+    def forward(self, input_):
+        b, dim_z = input_.shape
+        input_ = input_.view(b, dim_z, 1, 1)
+        return self.main(input_)
 
 
 class Discriminator(nn.Module):
